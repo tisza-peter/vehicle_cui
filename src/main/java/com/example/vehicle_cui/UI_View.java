@@ -1,11 +1,16 @@
 package com.example.vehicle_cui;
 
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
-import static java.util.stream.Collectors.toCollection;
-
 public class UI_View {
-  private UI_Vehicle_View_Model vehicleViewModel;
+
+    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+    private UI_Vehicle_View_Model vehicleViewModel;
     public void printVehicle(){
         System.out.println("vehicle datas is:");
         printMap(vehicleViewModel.getVehicleDatas());
@@ -62,5 +67,65 @@ public class UI_View {
         return max;
     }
 
+
+    public void ConsoleStart() {
+    }
+
+    public void PrintAvailableCommands() {
+        System.out.println("Enter lines of text.");
+        System.out.println("Enter 'stop' to quit.");
+        System.out.println("Enter 'set' to new vehicle adding.");
+        System.out.println("Enter 'get' to new vehicle adding.");
+    }
+
+    public String GetCommand()  {
+        try {
+            return reader.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public String GetRegistrationNumberFromConsole()  {
+        System.out.println("Enter registration number of vehicle to read its data.");
+        try {
+            return reader.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void GetVehicleFromConsole(VehicleEntity vehicle, List<OwnerEntity> owners) {
+        try {
+
+            System.out.println("Enter registration number of the new vehicle");
+            vehicle.setRegistrationNumber(reader.readLine());
+
+            System.out.println("Enter model of the new vehicle");
+            vehicle.setModel(reader.readLine());
+
+            System.out.println("Enter make of the new vehicle");
+            vehicle.setMake(reader.readLine());
+
+            System.out.println("Enter vehicle type of the new vehicle");
+            vehicle.setVehicleType(reader.readLine());
+
+            System.out.println("Enter seats number of the new vehicle");
+            vehicle.setNumberOfSeats(Integer.parseInt(reader.readLine()));
+
+            System.out.println("Enter the number of owners of the new vehicle");
+            int ownerNumber = Integer.parseInt(reader.readLine());
+
+            for (int i = 1; i <= ownerNumber; i++) {
+                System.out.println("Enter the name of the "+ Integer.toString(i)+". owner of the new vehicle");
+                String ownerName = reader.readLine();
+                System.out.println("Enter the address of the "+ Integer.toString(i)+". owner of the new vehicle");
+                String ownerAddress = reader.readLine();
+                owners.add(new OwnerEntity(ownerName,ownerAddress));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
 }

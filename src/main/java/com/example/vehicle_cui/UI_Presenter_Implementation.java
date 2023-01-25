@@ -1,6 +1,7 @@
 package com.example.vehicle_cui;
 
 import com.example.vehicle_core.*;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.*;
@@ -8,9 +9,13 @@ import java.util.*;
 public class UI_Presenter_Implementation implements UI_Presenter_Interface {
 
     @Override
-    public void DisplayOneVehicle(JSONObject getVehicleResponseModelJSON) {
+    public void DisplayOneVehicle(String getVehicleResponseModelJSON) {
         GetVehicleResponseModel ResponseModel = new GetVehicleResponseModel();
-        ResponseModel.setByJson(getVehicleResponseModelJSON);
+        try {
+            ResponseModel.setByJson(new JSONObject(getVehicleResponseModelJSON));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         VehicleEntity vehicle = ResponseModel.getVehicle();
         List<OwnerEntity> owners = ResponseModel.getOwners();
         UI_Vehicle_View_Model viewModel = new UI_Vehicle_View_Model();
@@ -38,9 +43,13 @@ public class UI_Presenter_Implementation implements UI_Presenter_Interface {
     }
 
     @Override
-    public void DisplaySaveStatus(JSONObject newVehicleResponseModelJSON) {
+    public void DisplaySaveStatus(String newVehicleResponseModelJSON) {
         NewVehicleResponseModel responseModel = new NewVehicleResponseModel();
-        responseModel.setByJson(newVehicleResponseModelJSON);
+        try {
+            responseModel.setByJson(new JSONObject(newVehicleResponseModelJSON));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         System.out.print("New vehicle registration status: ");
         System.out.println(responseModel.getStatus());
     }
